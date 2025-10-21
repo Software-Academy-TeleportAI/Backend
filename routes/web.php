@@ -16,4 +16,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('playground', function () {
+        return Inertia::render('playground');
+    })->name('playground');
+});
+
 require __DIR__.'/settings.php';
