@@ -3,6 +3,11 @@ import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 
+const route = (...args: any[]) =>
+    typeof window !== 'undefined' && (window as any).route
+        ? (window as any).route(...args)
+        : '';
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Playground',
@@ -10,17 +15,14 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Playground() {
-    const theme = localStorage.getItem('appearance');
-
-    const form = useForm({
+export default function Index() {
+    const { data, setData, post, processing, errors } = useForm({
         accessToken: '',
     });
 
-    const isDarkMode = theme === 'dark';
-
-    const submitButton = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        post(route('playground.store'));
     };
 
     return (
@@ -29,15 +31,13 @@ export default function Playground() {
             <div className="flex h-full items-center justify-center">
                 <div className="flex flex-col items-center gap-8">
                     <img
-                        width={isDarkMode ? 300 : 400}
+                        width={400}
                         height={400}
-                        src={
-                            isDarkMode ? 'github-dark-mode.webp' : 'github.png'
-                        }
+                        src={'github.png'}
                         alt="GitHub logo"
                     />
                     <form
-                        onSubmit={submitButton}
+                        onSubmit={handleSubmit}
                         className="flex flex-col items-center gap-4"
                     >
                         <label htmlFor="accessToken">
@@ -45,9 +45,9 @@ export default function Playground() {
                         </label>
                         <input
                             onChange={(e) =>
-                                form.setData('accessToken', e.target.value)
+                                setData('accessToken', e.target.value)
                             }
-                            value={form.data.accessToken}
+                            value={data.accessToken}
                             type="text"
                             name="accessToken"
                             placeholder="Access Token"
