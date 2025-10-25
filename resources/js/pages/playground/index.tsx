@@ -1,7 +1,9 @@
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
+import { AlertCircleIcon } from 'lucide-react';
 
 const route = (...args: any[]) =>
     typeof window !== 'undefined' && (window as any).route
@@ -17,7 +19,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function Index() {
     const { data, setData, post, processing, errors } = useForm({
-        accessToken: '',
+        access_token: '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -40,14 +42,29 @@ export default function Index() {
                         onSubmit={handleSubmit}
                         className="flex flex-col items-center gap-4"
                     >
+                        {Object.keys(errors).length > 0 && (
+                            <Alert variant="destructive">
+                                <AlertCircleIcon />
+                                <AlertTitle>Errors</AlertTitle>
+                                <AlertDescription>
+                                    <ul className="list-inside list-disc text-sm">
+                                        {Object.entries(errors).map(
+                                            ([key, message]) => (
+                                                <li key={key}>{message}</li>
+                                            ),
+                                        )}
+                                    </ul>
+                                </AlertDescription>
+                            </Alert>
+                        )}
                         <label htmlFor="accessToken">
                             Add your GitHub access token
                         </label>
                         <input
                             onChange={(e) =>
-                                setData('accessToken', e.target.value)
+                                setData('access_token', e.target.value)
                             }
-                            value={data.accessToken}
+                            value={data.access_token}
                             type="text"
                             name="accessToken"
                             placeholder="Access Token"
