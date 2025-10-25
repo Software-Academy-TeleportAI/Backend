@@ -10,6 +10,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+interface Owner {
+    login: string;
+}
+
 interface GitHubData {
     user: {
         login: string;
@@ -28,6 +32,7 @@ interface GitHubData {
         html_url: string;
         stargazers_count: number;
         language: string;
+        owner: Owner;
     }>;
 }
 
@@ -35,6 +40,11 @@ interface DashboardProps {
     githubData?: GitHubData | null;
     hasGithubToken: boolean;
 }
+
+const route = (...args: any[]) =>
+    typeof window !== 'undefined' && (window as any).route
+        ? (window as any).route(...args)
+        : '';
 
 export default function Dashboard({
     githubData,
@@ -107,7 +117,6 @@ export default function Dashboard({
                     </div>
                 </div>
 
-                {/* User Profile & Recent Repos */}
                 <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 bg-white p-6 md:min-h-min dark:border-sidebar-border dark:bg-gray-800">
                     <div className="mb-6 flex items-center gap-4">
                         <img
@@ -141,14 +150,12 @@ export default function Dashboard({
                             >
                                 <div className="flex items-start justify-between">
                                     <div>
-                                        <a
-                                            href={repo.html_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                        <Link
+                                            href={`/project/${repo.owner.login}/${repo.name}`}
                                             className="font-semibold text-blue-600 hover:underline dark:text-blue-400"
                                         >
                                             {repo.name}
-                                        </a>
+                                        </Link>
                                         {repo.description && (
                                             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                                                 {repo.description}
