@@ -17,6 +17,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/playground', [PlaygroundController::class, 'index'])->name('playground.index');
     Route::post('/playground', [PlaygroundController::class, 'store'])->name('playground.store');
+    Route::post('/project/{owner}/{repo}/create-documentation', [ProjectController::class, 'createDocumentation'])->name('project.createDocumentation');
     Route::get('/project/{owner}/{repo}', [ProjectController::class, 'show'])->name('project.show');
 });
 

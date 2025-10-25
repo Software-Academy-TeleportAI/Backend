@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 
 interface ProjectData {
     repository: {
@@ -212,6 +212,26 @@ export default function ProjectShow({ projectData }: ProjectShowProps) {
                             ))}
                         </div>
                     </div>
+                </div>
+                <div>
+                    <button
+                        onClick={() => {
+                            const [owner, repo] =
+                                projectData.repository.full_name.split('/');
+                            router.post(
+                                `/project/${owner}/${repo}/create-documentation`,
+                            );
+                        }}
+                        style={{
+                            background: 'white',
+                            color: 'black',
+                            borderRadius: 8,
+                            padding: 10,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Create your documentation
+                    </button>
                 </div>
                 <div className="rounded-xl border border-sidebar-border/70 bg-white p-6 dark:border-sidebar-border dark:bg-gray-800">
                     <h2 className="mb-4 text-xl font-semibold">
