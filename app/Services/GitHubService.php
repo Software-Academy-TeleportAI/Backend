@@ -44,4 +44,56 @@ class GitHubService
             'recent_repos' => array_slice($repos, 0, 5),
         ];
     }
+
+        public function getRepository(string $owner, string $repo)
+    {
+        return Http::withToken($this->accessToken)
+            ->get("{$this->baseUrl}/repos/{$owner}/{$repo}")
+            ->json();
+    }
+
+    public function getRepositoryLanguages(string $owner, string $repo)
+    {
+        return Http::withToken($this->accessToken)
+            ->get("{$this->baseUrl}/repos/{$owner}/{$repo}/languages")
+            ->json();
+    }
+
+       public function getRepositoryCommits(string $owner, string $repo, int $perPage = 10)
+    {
+        return Http::withToken($this->accessToken)
+            ->get("{$this->baseUrl}/repos/{$owner}/{$repo}/commits", [
+                'per_page' => $perPage
+            ])
+            ->json();
+    }
+
+    public function getRepositoryContributors(string $owner, string $repo)
+    {
+        return Http::withToken($this->accessToken)
+            ->get("{$this->baseUrl}/repos/{$owner}/{$repo}/contributors", [
+                'per_page' => 5
+            ])
+            ->json();
+    }
+
+
+    public function getRepositoryDetails(string $owner, string $repo)
+    {
+        try {
+            $repository = $this->getRepository($owner, $repo);
+            $languages = $this->getRepositoryLanguages($owner, $repo);
+            $commits = $this->getRepositoryCommits($owner, $repo, 10);
+            $contributors = $this->getRepositoryContributors($owner, $repo);
+
+            return [
+                'repository' => $repository,
+                'languages' => $languages,
+                'commits' => $commits,
+                'contributors' => $contributors,
+            ];
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
 }
