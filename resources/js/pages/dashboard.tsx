@@ -50,6 +50,10 @@ export default function Dashboard({
     githubData,
     hasGithubToken,
 }: DashboardProps) {
+    console.log('githubData', githubData);
+
+    console.log('hasGithubToken', hasGithubToken);
+
     if (!hasGithubToken) {
         return (
             <AppLayout breadcrumbs={breadcrumbs}>
@@ -162,15 +166,38 @@ export default function Dashboard({
                                             </p>
                                         )}
                                     </div>
-                                    <span className="text-sm text-gray-500">
-                                        ⭐ {repo.stargazers_count}
-                                    </span>
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: 10,
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <span className="text-sm text-gray-500">
+                                            ⭐ {repo.stargazers_count}
+                                        </span>
+                                    </div>
                                 </div>
-                                {repo.language && (
-                                    <span className="mt-2 inline-block rounded bg-gray-100 px-2 py-1 text-xs dark:bg-gray-700">
-                                        {repo.language}
-                                    </span>
-                                )}
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {repo.language && (
+                                        <span className="mt-2 inline-block rounded bg-gray-100 px-2 py-1 text-xs dark:bg-gray-700">
+                                            {repo.language}
+                                        </span>
+                                    )}
+                                    <button
+                                        onClick={() => console.log(repo.id)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        Add
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>
