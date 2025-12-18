@@ -1,8 +1,5 @@
 <?php
 
-use App\Http\Controllers\PlaygroundController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -14,11 +11,15 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/playground', [PlaygroundController::class, 'index'])->name('playground.index');
-    Route::post('/playground', [PlaygroundController::class, 'store'])->name('playground.store');
-    Route::post('/project/{owner}/{repo}/create-documentation', [ProjectController::class, 'createDocumentation'])->name('project.createDocumentation');
-    Route::get('/project/{owner}/{repo}', [ProjectController::class, 'show'])->name('project.show');
+    Route::get('dashboard', function () {
+        return Inertia::render('dashboard');
+    })->name('dashboard');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('playground', function () {
+        return Inertia::render('playground');
+    })->name('playground');
 });
 
 require __DIR__.'/settings.php';
