@@ -4,10 +4,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocsGenerationController;
+use App\Http\Controllers\IntegrationController;
+
+Route::post('/webhook/docs-generated', [IntegrationController::class, 'handleWebhook'])
+    ->name('api.webhook.docs_generated');
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    
+    Route::post('/generate', [IntegrationController::class, 'startGeneration']);
+    Route::get('/generate/status/{id}', [IntegrationController::class, 'checkStatus']);
+  
+});
 
 Route::get('/mock', function () {
     return [
