@@ -14,6 +14,7 @@ class IntegrationController extends Controller
         $request->validate([
             'repo_url' => 'required|url',
             'repo_name' => 'required|string',
+            'tehnical' => 'required|boolean',
         ]);
 
         $job = DocumentationJob::create([
@@ -28,6 +29,7 @@ class IntegrationController extends Controller
                 'job_id' => $job->id,
                 'repo_url' => $request->repo_url,
                 'github_token' => $request->user()->github_token,
+                'tehnical' => $request->tehnical,
                 'callback_url' => route('api.webhook.docs_generated') 
             ]);
             
