@@ -54,4 +54,13 @@ class AuthController extends Controller
             'token' => $user->createToken('auth_token')->plainTextToken
         ], 200);
     }
+
+    public function verifyAuthToken(Request $request)
+    {
+        return response()->json([
+            'valid' => true,
+            'message' => 'Token is valid',
+            'user' => $request->user() 
+        ], 200);
+    }
 }

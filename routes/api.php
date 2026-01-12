@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     
     Route::post('/user/github_access_token', [UserGithubController::class, 'setGithubAccess']);
+    Route::post('/user/auth_token', [AuthController::class, 'verifyAuthToken']);
     Route::post('/generate', [IntegrationController::class, 'startGeneration']);
     Route::get('/generate/status/{id}', [IntegrationController::class, 'checkStatus']);
   
