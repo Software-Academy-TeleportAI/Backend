@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DocsGenerationController;
 use App\Http\Controllers\IntegrationController;
+use App\Http\Controllers\UserGithubController;
 
 Route::post('/webhook/docs-generated', [IntegrationController::class, 'handleWebhook'])
     ->name('api.webhook.docs_generated');
@@ -19,6 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
     
+    Route::post('/user/github_access_token', [UserGithubController::class, 'setGithubAccess']);
     Route::post('/generate', [IntegrationController::class, 'startGeneration']);
     Route::get('/generate/status/{id}', [IntegrationController::class, 'checkStatus']);
   
