@@ -33,6 +33,14 @@ class AnalysisRepoController extends Controller
         return response()->json($analysis);
     }
 
+    public function destroy($id)
+    {
+        $analysis = RepositoryAnalysis::findOrFail($id);
+        $analysis->delete();
+
+        return response()->json(['message' => 'Analysis deleted successfully']);
+    }
+
     public function storeAnalysis(Request $request)
     {
 

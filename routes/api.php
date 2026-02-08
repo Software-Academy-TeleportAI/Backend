@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/repository/analysis', [AnalysisRepoController::class, 'index']);
     Route::get('/repository/analysis/{id}', [AnalysisRepoController::class, 'show']);
     Route::put('/repository/analysis/{id}', [AnalysisRepoController::class, 'update']);
+    Route::delete('/repository/analysis/{id}', [AnalysisRepoController::class, 'destroy']);
   
 });
 
