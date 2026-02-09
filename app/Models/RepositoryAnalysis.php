@@ -10,6 +10,7 @@ class RepositoryAnalysis extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'repository_id',
         'repo_name',
         'summary',

@@ -7,15 +7,26 @@ use App\Models\RepositoryAnalysis;
 
 class AnalysisRepoController extends Controller
 {
+
     public function index(Request $request)
     {
-        $analyses = RepositoryAnalysis::orderBy('created_at', 'desc')->get();
+        $userId = $request->user()->id;
+
+        $analyses = RepositoryAnalysis::where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return response()->json($analyses);
     }
 
-        public function show($id)
+    public function show(Request $request, $id)
     {
-        $analysis = RepositoryAnalysis::findOrFail($id);
+        $userId = $request->user()->id;
+
+        $analysis = RepositoryAnalysis::where('id', $id)
+            ->where('user_id', $userId)
+            ->firstOrFail();
+
         return response()->json($analysis);
     }
 
@@ -44,6 +55,8 @@ class AnalysisRepoController extends Controller
     public function storeAnalysis(Request $request)
     {
 
+        $userId = $request->user()->id;
+
         $validated = $request->validate([
             'repo_id' => 'required', 
             'repo_name' => 'nullable|string',
@@ -55,7 +68,10 @@ class AnalysisRepoController extends Controller
 
 
         $analysis = RepositoryAnalysis::updateOrCreate(
-            ['repository_id' => $validated['repo_id']],
+            [
+                'repository_id' => $validated['repo_id'],
+                'user_id' => $userId,
+            ],
             [
                 'repo_name' => $validated['repo_name'] ?? null,
                 'summary' => $validated['summary'] ?? null,
